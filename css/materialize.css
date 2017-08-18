@@ -3374,6 +3374,7 @@ input[type=range] + .thumb {
 }
 
 .section {
+  margin: 0 auto;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
@@ -4204,7 +4205,7 @@ nav .input-field label.active {
   }
 }
 
-@font-face {
+/*@font-face {
   font-family: "Roboto";
   src: local(Roboto Thin), url("../fonts/roboto/Roboto-Thin.eot");
   src: url("../fonts/roboto/Roboto-Thin.eot?#iefix") format("embedded-opentype"), url("../fonts/roboto/Roboto-Thin.woff2") format("woff2"), url("../fonts/roboto/Roboto-Thin.woff") format("woff"), url("../fonts/roboto/Roboto-Thin.ttf") format("truetype");
@@ -4237,7 +4238,7 @@ nav .input-field label.active {
   src: url("../fonts/roboto/Roboto-Bold.eot");
   src: url("../fonts/roboto/Roboto-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/roboto/Roboto-Bold.woff2") format("woff2"), url("../fonts/roboto/Roboto-Bold.woff") format("woff"), url("../fonts/roboto/Roboto-Bold.ttf") format("truetype");
   font-weight: 700;
-}
+}*/
 
 a {
   text-decoration: none;
@@ -5037,7 +5038,7 @@ button.btn-floating {
           transform: translateY(-50%);
   height: 100%;
   left: auto;
-  width: 500px;
+  width: 100% ; /*500px;
   /*width 100% only goes to width of button container */
 }
 

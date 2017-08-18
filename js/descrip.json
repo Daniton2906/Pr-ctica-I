@@ -1,0 +1,59 @@
+{
+"name":"root",
+"children": [
+	{"name": "Gráfico 1",
+	"children": [
+		{"name":"parrafo1","size":"Cada dominio puede tener asociados uno o más servidores de nombre, siendo la recomendación actual de un mínimo de servidores por dominio, además, la recomendación de la cantidad de países en los que se deben encontrar dichos servidores es de un mínimo de dos, al igual que el mínimo de sistemas autónomos en los que deben tener direcciones IPs los servidores de los dominios"},
+		{"name":"parrafo2","size":"En este gráfico se puede apreciar cómo se encuentran distribuidos la cantidad de servidores de cada dominio. Ún total de 114.998 dominios(Rojo oscuro) cumplen la primera restriccion de tener un mínimo de 3 servidores de nombres"},
+		{"name":"parrafo3","size":"Los dominios que se encuentran de colores azul y azul oscuro son los que cumplen la recomendación de tener 2 o más sistemas autónomos, correspondiendo a un 33,3% del total. Por otro lado, los dominios en colores café claro y café oscuro, que son los que cumplen la condición de tener sus servidores en un mínimo de 2 países distintos, corresponden a un 24,94% del total."},
+		{"name":"parrafo4","size":"Ahora, si intersectamos estos 3 grupos, la cantidad de dominios que cumple con estas 3 recomendaciones disminuye a un 16,61%"}
+	]},
+	{"name": "Gráfico 2",
+	"children": [
+		{"name":"parrafo1","size": ""}
+	]},
+	{"name": "Gráfico 3",
+	"children": [
+		{"name":"parrafo1","size": "La recomendación indica que cada dominio debe tener un mínimo de 3 servidores de nombres asociados, sin embargo, tan sólo un 34,03% de los dominios cumple la recomendación, habiendo 216.448 dominios que cumplen sólo con tener 2 servidores de nombre(lo que era la antigua recomendación)."}
+	]},
+	{"name": "Gráfico 4",
+	"children": [
+		{"name":"parrafo1","size": "La cantidad de distintos sistemas autónomos en los que debería tener servidores de nombres los dominios está dada por la recomendación de tener un mínimo de 2. sin embargo la gran mayorpia no cumple esta recomendación, habiendo un total de 223.446 dominios que tienen sus servidores en tan sólo un sistema autónomo."}
+	]},
+	{"name": "Gráfico 5",
+	"children": [
+		{"name":"parrafo1","size": "Chile al ser un país muy sísmico, tiene una recomendación básica de tener sus servidores de nombre en al menos 2 países, pero como se puede apreciar, la mayoría se encuentran en sólo un país, habiendo tan sólo un 24,94% de los dominios que cumplen la recomendación"}
+	]},
+	{"name": "Gráfico 6",
+	"children": [
+		{"name":"parrafo1","size": "DNSSEC corresponde a las extensiones de seguridad diseñadas para que el sistema DNS tenga un mejor funcionamiento con respecto a la autenticidad de los datos, evita a los usuarios ser víctimas de estafas y otros problemas generados mediante el envenenamiento del caché o el Fallo Kaminsky."},
+		{"name":"parrafo2","size": "Lamentablemente, en Chile, observando los resultados obtenidos, no hay una gran conciencia con respecto a la autenticidad de los datos, y tan sólo 278 dominios tienen una implementación de DNSSEC, habiendo sólo 78 Dominios que cumplen correctamente con su funcionamiento."}
+	]},
+	{"name": "Gráfico 7",
+	"children": [
+		{"name":"parrafo1","size": "Desde el gráfico anterior se puede notar que de los 278 dominios que tienen DNSSEC implementado, 200 tienen fallas en su implementación, en este gráfico se muetsran cuáles son las típicas fallas y su recurrencia, siendo la más frecuente la de la correcta validación con el firmado de la delegación del dominio superior."}
+	]},
+	{"name": "Gráfico 8",
+	"children": [
+		{"name":"parrafo1","size": "Un servidor de nombres puede tener asociadas varias direcciones IP, lo que mejora la resiliencia, ya que si no es posible acceder por una de las direcciones, se puede utilizar otra."},
+		{"name":"parrafo2","size": "En este gráico se puede ver que la mayoría de los dominios tiene servidores con 2 direcciones IP diferentes."}
+	]},
+	{"name": "Gráfico 9",
+	"children": [
+		{"name":"parrafo1","size": "La implementación de la nueva verión de IP IPv6 al trabajar sobre otro protocolo agrega una nueva capa de resiliencia si es utilizado."},
+		{"name":"parrafo2","size": "La recomendación en este caso indica que cada dominio debe tener al menos un servidor con dirección en IPv4 y al menos uno con dirección en IPv6 para considerarse resiliente. Observando los datos recolectados podemos notar que sólo un 13,13% de los dominios cumplen."}
+	]},
+	{"name": "Gráfico 10",
+	"children": [
+		{"name":"parrafo1","size": "Siguiendo en la misma línea de la resiliencia que otorga el hehco de tener implementados los protocolos de IP en sus dos versiones, se puede apreciar que la mayoría de los servidores tiene sólo direcciones en IPv4, siendo sólo 43.994 dominios los que cumplen la recomendación."},
+		{"name":"parrafo2","size": "Mirando el gráfico en un poco más de detalle se puede observar que no existe ningún dominio que tenga sus servidores sólo con IPv6, lo que se debe probablemente a que IPv6 apareción después de IPv4."},
+		{"name":"parrafo3","size": "Además, como hallazgo interesante, se puede ver que existe una pequeña cantidad de dominios que no presenta ninguna dirección IP de sus servidores de nombre, por lo que son dominios inalcanzables."}
+	]},
+	{"name": "Gráfico 11",
+	"children": [
+		{"name":"parrafo1","size": "Los servidores de nombre son una de las partes más importantes dentro del sistema DNS, por eso es importante que ellos sigan y cumplan las recomendaciones para un correcto funcionamiento."},
+		{"name":"parrafo2","size": "Como se puede apreciar, el índicce de falla es muy bajo, lo que es bueno para los usuarios del Internet, notando que más del 95% de los servidores cumplen con todas las recomendaciones."},
+		{"name":"parrafo3","size": "A pesar de que el porcentaje es muy alto, cabe destacar que la cantidad de servidores analizados es muy alta, de hecho 41.931 servidores no cumplen la recomendación de permitir comunicación TCP, lo que con la inserción de DNSSEC es muy necesario debido al tamaño de los paquetes UDP."}
+	]}
+]
+}

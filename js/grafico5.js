@@ -1,18 +1,50 @@
 // JavaScript source code
 
-var margin = {top: 80, right: 50, bottom: 80, left: 150},
+var margin = {top: 80, right: 200, bottom: 80, left: 100},
     w = 850,
     h = 500,
     url_name = "data/countCountryPerDomain/countCountryPerDomain"
-    graf_id = "graf1";
+    graf_id = "#grafico5"
+    text_id = "#text5"
+    opt_id = "#opts5";
+
 
 //Crear un elemento SVG
-var svg = d3.select(".grafico1") //("#featured-wrapper")
+var svg = d3.select(graf_id) //("#featured-wrapper")
             .append("svg")
             .attr("width", w)
             .attr("height", h)
-            .attr("id", graf_id)
             .style("background-color", "white");
+
+
+/* Se realiza la obtención de los datos. */
+d3.json("js/descrip.json", function(text) {
+
+    var root = d3.hierarchy(text);
+    root.sum(function(d) {return d.size})
+
+    var partition = d3.partition().size([height, width])
+                 .padding(0)
+                 //.round(f);
+    /* Permite seleccionar donde posicionar el texto en la página web. */
+    var svgraf3 = d3.select(text_id);
+    /* Permite particionar los datos en nodos. */
+    var g1 = partition(root).children;
+    
+    /* Se busca el nodo correspondiente al gráfico que se desea definir. */
+    g1.forEach(function(d){
+        if(d.data.name=='Gráfico 5'){           
+            /* Se adhiere el texto a la página web. */
+            d.data.children.forEach(function(h){
+                svgraf3.append("p")
+                .attr("align","justify")
+                .style("text-anchor","end")
+                .text(h.size);
+            });
+        };
+    });
+
+})            
 
 //Width and height
 var width = +svg.attr("width") - margin.right - margin.left,
@@ -38,10 +70,7 @@ var xAxis = d3.axisBottom()
 
 var tip = d3.tip()
         .attr('class', 'd3-tip')
-        .offset([-10, 0])
-        .html(function(d) {
-            return "<strong>Dominios:</strong> <span style='color:white'>" + d.numdomains + "</span>";
-        });
+        .offset([-10, 0]);
 
 
 function updateCSVBarChart(id, n, duration) {
@@ -54,11 +83,17 @@ function updateCSVBarChart(id, n, duration) {
         }, function (error, data) { //callback
             if (error) throw error;
 
-            var g = d3.selectAll(id).select("g");
+            var g = d3.select(id).select("svg").select("g");
+
+            var keys = data.columns;   
+            //console.log(keys); ["numdomains", "countrycount"]
+            tip.html(function(d) {
+                return "<strong>Dominios:</strong> <span style='color:white'>" + d[keys[0]] + "</span>";
+            });
 
             g.call(tip);
             
-            var maxValue = d3.max(data, function (d) { return d.numdomains; });
+            var maxValue = d3.max(data, function (d) { return d[keys[0]]; });
 
             xScale.domain([0, data.length]);
 
@@ -66,7 +101,7 @@ function updateCSVBarChart(id, n, duration) {
 
             color.domain([-maxValue, maxValue]);
 
-            x.domain(data.map(function(d) { return d.countrycount; }));
+            x.domain(data.map(function(d) { return d[keys[1]]; }));
             
             var rects= g.selectAll("rect");
 
@@ -77,14 +112,14 @@ function updateCSVBarChart(id, n, duration) {
             rects.transition()
                 .duration(duration)
                 .attr("x", function (d, i) {
-                    return x(d.countrycount);
+                    return x(d[keys[1]]);
                 })
                 .attr("y", function (d) {
-                    return yScale(d.numdomains) - barPadding;  //Altura menos el dato
+                    return yScale(d[keys[0]]) - barPadding;  //Altura menos el dato
                 })
                 .attr("width", x.bandwidth())
                 .attr("height", function (d) {
-                    return height - yScale(d.numdomains) + barPadding;
+                    return height - yScale(d[keys[0]]) + barPadding;
                 })
                 .attr("fill", function (d) {
                     return color(0);//color(d.numdomains);
@@ -123,18 +158,16 @@ function updateCSVBarChart(id, n, duration) {
                     .attr("dy","-6em")
                     .attr("transform","rotate(-90)")
                     .style("text-anchor","end")
-                    .text("Numero de dominios, logaritmica");
+                    .text("Número de dominios, logaritmica");
 
         });
 }
 
-updateCSVBarChart("#" + graf_id, "2017-01-16", 0);
-updateCSVBarChart("#" + graf_id, "2017-01-16", 0);
+updateCSVBarChart(graf_id, "2017-01-16", 0);
+updateCSVBarChart(graf_id, "2017-01-16", 0);
 
 /* Esto permite identificar cuando ocurre un cambio del set de datos del gráfico. */ 
-d3.select("#opts1").on("change", function() {
-    //console.log(d3.select(this).property("value"));
+d3.select(opt_id).on("change", function() {
     var value = d3.select(this).property("value");
-    //alert("Cambia a " + value);
-    updateCSVBarChart("#" + graf_id, value, 2000);
+    updateCSVBarChart(graf_id, value, 2000);
 });
