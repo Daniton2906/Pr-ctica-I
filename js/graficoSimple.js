@@ -18,7 +18,7 @@ var xScale = d3.scaleLinear()
     .domain([0, dataset.length])
     .range([padding, w]);
 
-console.log(maxValue);
+//console.log(maxValue);
 
 /*
 var color = d3.scaleQuantize()
@@ -93,3 +93,55 @@ svg.selectAll("text")
         .attr("class", "axis")
         .attr("transform", "translate(" + padding + ",0)")
         .call(yAxis);
+
+
+function modifyGraph(id) {
+    var svg = d3.selectAll(id);
+    
+    var dataset = [];
+    for (var i = 0, t = 20; i < t; i++) {
+        dataset.push(Math.round(Math.random() * t) + 5);
+    }
+    //var maxValue = d3.max(dataset, function (d) { return d; });
+    var h = svg.attr("height");
+    var barPadding = 5;  // <-- Nueva!
+
+    var color = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, maxValue]);
+
+    //console.log(dataset);
+    var rects = svg.selectAll("rect");
+    //var oldSet = rects.data();
+    rects.data(dataset).enter().append("rect");
+    //console.log(rects.data());
+    
+    rects.transition().duration(2000)
+        .attr("y", function (d) {
+            return yScale(d);  //Altura menos el dato
+            })
+        .attr("height", function (d) {
+            return h - yScale(d);
+        })
+        .attr("fill", function (d) {
+            return color(d); //"rgb(0, 0, " + (d * 10) + ")";
+        });
+
+    var texts = svg.selectAll("text");
+    //var oldSet = rects.data();
+    texts.data(dataset).enter().append("text");
+    //console.log(rects.data());
+    var h = svg.attr("height");
+    texts.transition().duration(2000)
+        .text(function (d) {
+            return d;
+        })
+        .attr("y", function (d) {
+            return yScale(d) + 15; 
+        })
+    svg.selectAll(".axis").remove();
+    svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + padding + ",0)")
+        .call(yAxis);
+
+}

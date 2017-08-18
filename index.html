@@ -1,103 +1,184 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
     <title>Observatorio del Internet Chileno</title>    
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script type="text/javascript" src="js/d3-tip.js"></script>
     <script src="node_modules/jquery/dist/jquery.js" type="text/javascript"></script>
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800" rel="stylesheet" />
-    <link href="default.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />    
-    <script type="text/javascript" src="functions.js"></script>
-    <style type="text/css">
-        div.bar {
-            display: inline-block;
-            width: 20px;
-            height: 75px; /* Esto se cambiará próximamente */
-            margin-right: 2px;
-            background-color: teal;
-        }
-
-        svg {
-            display: inline-block;
-            background-color: floralwhite;
-        }
-
-        .axis path,
-        .axis line {
-            fill: none;
-            stroke: black;
-            shape-rendering: crispEdges;
-        }
-
-        .axis text {
-            font-family: sans-serif;
-            font-size: 11px;
-        }
-
-        .arc text {
-            font: 10px sans-serif;
-            text-anchor: middle;
-        }
-
-        .arc path {
-            stroke: #fff;
-        }  
-    </style>
+    <!--link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800" rel="stylesheet" /-->
+    <!--link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"-->
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <!--link href="css/default.css" rel="stylesheet" type="text/css" media="all" /-->
+    <link href="css/fonts.css" rel="stylesheet" type="text/css" media="all" /> 
+    <link href="css/tip-style.css" rel="stylesheet" type="text/css" media="all" /> 
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" /> 
 </head>
 <body>
+    <div class = "navbar-fixed">
+      <nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo"><img src="logo.jpg" width="90"></img></a>
+          <ul class="right hide-on-med-and-down" style="width:815px;">
+            <li><a href="#g3">Gráf3</a></li>
+                <li><a href="#g4">Gráf4</a></li>
+            <li><a href="#g5">Gráf5</a></li>
+          </ul>
+          <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+      </nav>
+    </div>
     
-    <div id="wrapper">
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">Observatorio del Internet Chileno</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">En ésta página podrás informarte sobre el estado de los dominios bajo el .CL y el cumplimiento de estándares y otra información relacionada con la resiliencia del Internet Chileno.</h5>
+      </div>
+      <br><br>
 
-        <div id="featured-wrapper">
-            <div id="featured" class="container">
-                <div class="major">
-                    <h2>Observatorio del Internet Chileno</h2>
-                    <h4>En esta página podrás informarte sobre el estado de los dominios bajo el .CL y el cumplimiento de estándares y otra información relacionada con la resiliencia del Internet Chileno.</h4>
-                </div>                
-            </div>            
+    </div>
+  </div>
+<div class="container">
+    <div class="section">
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">perm_media</i></h2>
+            <h5 class="center">Datos</h5>
+
+            <p ALIGN="justify" class="light">Los datos que se visualizan a continuación fueron recolectados por un software diseñado en NIC Labs con el fin de entender el estado y la resiliencia del Internet chileno.</p>
+          </div>
         </div>
-     </div>
-    <!--div id="featured-wrapper">
-        <input type="button" onclick="modifyGraph('#graf1')" value="Say Hellooo" />
-        <script type="text/javascript" src="graficoSimple.js"></script>
-        
-    </div-->
-    <div id="featured-wrapper">
-        <script type="text/javascript" src="graficoCSV.js"></script>
-        <input type="button" onclick="updateGraph('#graf2')" value="Say Hellooo2" />
-    </div>  
-    <!--div id="featured-wrapper">        
-        <script type="text/javascript" src="piechart.js"></script>
-        <input type="button" onclick="updatePie('#pie1')" value="Say Hellooo" />
-    </div-->
-    <div id="featured-wrapper">
-        <div id="featured" class="container">
-            <div class="column1">
-                <span class="icon icon-cloud-download"></span>
-                <div class="title">
-                    <h2>Datos</h2>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">lock_outline</i></h2>
+            <h5 class="center">Resiliencia del Internet</h5>
+
+            <p ALIGN="justify" class="light">La resiliencia del Internet se define como la capacidad de la red de mantenerse, recuperarse y sobrevivir ante fallos de diversos tipos, para poder ser resiliente hay que cumplir estándares e implementar las recomendaciones de los expertos.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><i class="material-icons">language</i></h2>
+            <h5 class="center">Dominios bajo el .cl</h5>
+
+            <p ALIGN="justify" class="light">Desde que los dominios .CL existen, se ha notado un gran crecimiento con los años de la cantidad de dominios registrados bajo este TLD, llegando a más de 500 mil dominios en el año 2016.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br><br><hr>
+
+    <div class="section scrollspy" id="g3">
+        <div class="container">
+            <br><br><br><h4 class="header text_b" ALIGN = center> <u><b> Gráfico 3: </b> "N° de NSs VS N° Dominios" </u></h4><br><br>
+            <div class="row">
+                <div class="col s12 m7">
+                    <div>
+                        <select class="browser-default" id="opts3">
+                            <option name="dG31" value="2017-01-16" selected>16-01-2017</option>
+                            <option name="dG32" value="2017-01-31">31-01-2017</option>
+                            <option name="dG33" value="2017-06-27">27-06-2017</option>
+                        </select>
+                    </div>
+                    <div id="grafico3"></div>
                 </div>
-                <p>Los datos que se visualizan a continuación fueron recolectados por un software diseñado en NIC Labs con el fin de entender el estado y la resiliencia del Internet chileno.</p>
-            </div>
-            <div class="column2">
-                <span class="icon icon-unlock"></span>
-                <div class="title">
-                    <h2>Resiliencia del Internet</h2>
+                <div class="col s12 m5" style="padding-left:0.5cm;"><div id="text3"></div></div>
+            </div>          
+        </div>
+    </div><hr width=70%>
+
+    <div class="section scrollspy" id="g4">
+        <div class="container">
+            <br><br><br><h4 class="header text_b" ALIGN = center> <u><b> Gráfico 4: </b> "N° ASNs VS N° Dominios" </u></h4> <br><br>
+            <div class="row">
+                <div class="col s12 m7">
+                    <div>
+                        <select class="browser-default" id="opts4">
+                            <option name="dG41" value="2017-01-16" selected>16-01-2017</option>
+                            <option name="dG42" value="2017-01-31">31-01-2017</option>
+                            <option name="dG43" value="2017-06-27">27-06-2017</option>
+                        </select>
+                    </div>
+                    <div id="grafico4"></div>
                 </div>
-                <p>La resiliencia del Internet se define como la capacidad de la red de mantenerse, recuperarse y sobrevivir ante fallos de diversos tipos, para poder ser resiliente hay que cumplir estándares e implementar las recomendaciones de los expertos.</p>
-            </div>
-            <div class="column3">
-                <span class="icon icon-rss"></span>
-                <div class="title">
-                    <h2>Dominios bajo el .cl</h2>
-                </div>
-                <p>Desde que los dominios .CL existen, se ha notado un gran crecimiento con los años de la cantidad de dominios registrados bajo este TLD, llegando a más de 500 mil dominios en el año 2016.</p>
+                <div class="col s12 m5"><div id="text4"></div></div>
             </div>
         </div>
+    </div><hr width=70%>
         
-    </div>    
+    <div class="section scrollspy" id="g5">
+            <div class="container">
+                <br><br><br><h4 class="header text_b" ALIGN = center><u><b> Gráfico 5: </b> "N° Paises VS N° Dominios"  </u></h4><br><br>
+                <div class="row">
+                
+                    <div class="col s12 m7">
+                        <select class="browser-default" id="opts5">
+                            <option name="dG51" value="2017-01-16" selected>16-01-2017</option>
+                            <option name="dG52" value="2017-01-31">31-01-2017</option>
+                            <option name="dG53" value="2017-06-27">27-06-2017</option>
+                        </select>                        
+                        <div id="grafico5"></div>
+                    </div>
+                    <div class="col s12 m5" style="padding-left:0.5cm;"><div id="text5"></div></div>
+                </div>
+                
+            </div>
+    </div><hr width=70%>
+
+    <div class="section scrollspy" id="g6">
+        <div class="container">
+            <br><br><br><h4 class="header text_b" ALIGN = center> <u><b></b> "N° IPs de Servidores de Nombre VS N° Dominios" </u></h4><br><br>
+            <div class="row">
+                <div class="col s12 m7">
+                    <div>
+                        <select class="browser-default" id="opts6">
+                            <option name="dG61" value="2017-01-16" selected>16-01-2017</option>
+                            <option name="dG62" value="2017-01-31">31-01-2017</option>
+                            <option name="dG63" value="2017-06-27">27-06-2017</option>
+                        </select>
+                    </div>
+                    <div id="grafico6"></div>
+                </div>
+                <div class="col s12 m5" style="padding-left:0.5cm;"><div id="text6"></div></div>
+            </div>
+        </div>
+    </div><hr width=70%>
+
+    <div class="section scrollspy" id="g7">
+        <div class="container">
+            <br><br><br><h4 class="header text_b" ALIGN = center> <u><b></b> "Fallas típicas en la implementación de DNSSEC" </u></h4><br><br>
+            <div class="row">
+                <div class="col s12 m7">
+                    <div>
+                        <select class="browser-default" id="opts7">
+                            <option name="dG71" value="2017-01-24" selected>24-01-2017</option>
+                            <option name="dG72" value="2017-01-31">31-01-2017</option>
+                            <option name="dG73" value="2017-06-27">27-06-2017</option>
+                        </select>
+                    </div>
+                    <div id="grafico7"></div>
+                </div>
+                <div class="col s12 m5" style="padding-left:0.5cm;"><div id="text7"></div></div>
+            </div>          
+        </div>
+    </div><hr width=70%>
+    
 </body>
+<script type="text/javascript" src="js/graficosBarra.js"></script>
+<script type="text/javascript" src="js/graficoLinea.js"></script>
+<!--script type="text/javascript" src="js/grafico3.js"></script-->
+<!--script type="text/javascript" src="js/grafico5.js"></script-->
+
+
+
 </html>
