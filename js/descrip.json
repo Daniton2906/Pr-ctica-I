@@ -54,6 +54,9 @@
 		{"name":"parrafo1","size": "Los servidores de nombre son una de las partes más importantes dentro del sistema DNS, por eso es importante que ellos sigan y cumplan las recomendaciones para un correcto funcionamiento."},
 		{"name":"parrafo2","size": "Como se puede apreciar, el índicce de falla es muy bajo, lo que es bueno para los usuarios del Internet, notando que más del 95% de los servidores cumplen con todas las recomendaciones."},
 		{"name":"parrafo3","size": "A pesar de que el porcentaje es muy alto, cabe destacar que la cantidad de servidores analizados es muy alta, de hecho 41.931 servidores no cumplen la recomendación de permitir comunicación TCP, lo que con la inserción de DNSSEC es muy necesario debido al tamaño de los paquetes UDP."}
+	]},
+	{"name": "Sin descripción",
+	"children": [
 	]}
 ]
 }
