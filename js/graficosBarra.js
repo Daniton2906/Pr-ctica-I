@@ -357,6 +357,19 @@ function updateCSVBarChart(total_dataset, graf_id, n, text_id, url_name, duratio
         });
 }
 
+
+info3 = {graf_id: "#grafico3", 
+        text_id: "#text3", 
+        text_name: 'Gráfico 3', 
+        opt_id: "#opts3", 
+        url_name: "data/countNSPerDomain/countNSPerDomain", 
+        tip_name: "NSs", 
+        inverse: 1, 
+        x_label:"Número de NSs", 
+        y_label:"Cantidad de dominios", 
+        logScale:1};
+        
+
 set_bar_chart([], "#grafico3", "#text3", 'Gráfico 3', "#opts3", "data/countNSPerDomain/countNSPerDomain", "NSs", 1, "Número de NSs", "Cantidad de dominios", 0, undefined, 1);
 
 set_bar_chart([], "#grafico4", "#text4", 'Gráfico 4', "#opts4", "data/countASNPerDomain/countASNPerDomain", "Dominios", 0, "Número de dominios, logaritmica", "Cantidad de ASNs", 0, undefined, 1);
