@@ -1,18 +1,27 @@
 
-
-var data1 = [{"letter":"A","presses":3},{"letter":"B","presses":1},{"letter":"C","presses":1},{"letter":"D","presses":0}];
-var data2 = [{"letter":"A","presses":1},{"letter":"B","presses":3},{"letter":"C","presses":1},{"letter":"D","presses":1}];
-var data3 = [{"letter":"A","presses":1},{"letter":"B","presses":1},{"letter":"C","presses":3},{"letter":"D","presses":0}];
+var margin = {top: 80, right: 200, bottom: 80, left: 100},
+    w = 850,
+    h = 500; 
+var data1 = [{"letter":"A","presses":3},{"letter":"B","presses":1},{"letter":"C","presses":1}];
+var data2 = [{"letter":"A","presses":1},{"letter":"B","presses":3},{"letter":"C","presses":1}];
+var data3 = [{"letter":"A","presses":1},{"letter":"B","presses":1},{"letter":"C","presses":3}];
 
 var arc, labelArc, radius;
 
 function init_pie_chart(){
 
-  var width = 300,
-  height = 300;
+  var svg = d3.select("#grafico9")
+    .append("svg")
+    .attr("width", w)
+    .attr("height", h);
+    
+  var width = +svg.attr("width") - margin.right - margin.left,
+        height = +svg.attr("height") - margin.top - margin.bottom,
   // Think back to 5th grade. Radius is 1/2 of the diameter. What is the limiting factor on the diameter? Width or height, whichever is smaller 
   radius = Math.min(width, height) / 2;
 
+  var g = svg.append("g")
+      .attr("transform", "translate(" + width/2 + "," + height/2 +")"); // Moving the center point. 1/2 the width and 1/2 the height
 
   arc = d3.arc()
     .outerRadius(radius - 10)
@@ -23,29 +32,24 @@ function init_pie_chart(){
     .innerRadius(radius - 40);
 
   var color = d3.scaleOrdinal()
-  .range(["#2C93E8","#838690","#F56C4E", ,"#F56CFE"]);
+  .range(["#2C93E8","#838690","#F56C4E"]);
 
   var pie = d3.pie()
   .value(function(d) { return d.presses; })(data1);
 
-  var svg = d3.select("#grafico9")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-      .append("g")
-      .attr("transform", "translate(" + width/2 + "," + height/2 +")"); // Moving the center point. 1/2 the width and 1/2 the height
+  
 
-  var g = svg.selectAll("arc")
+  var pie_chart = g.selectAll("arc")
     .data(pie)
     .enter().append("g")
     .attr("class", "arc");
 
-  g.append("path")
+  pie_chart.append("path")
     .attr("d", arc)
     .style("fill", function(d) { return color(d.data.letter);})
     .each(function(d) { this._current = d; }); // store the initial angles;
 
-  g.append("text")
+  pie_chart.append("text")
     .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
     .text(function(d) { 
       if(d.data.presses == 0)
