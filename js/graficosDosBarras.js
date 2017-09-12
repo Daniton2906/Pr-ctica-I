@@ -1,7 +1,7 @@
 // JavaScript source code
 
-var margin = {top: 80, right: 200, bottom: 80, left: 100},
-    w = 850,
+var margin = {top: 80, right: 0, bottom: 80, left: 85},
+    w = 550,
     h = 500; 
 
 var xScale_0 = d3.local(),
@@ -13,6 +13,9 @@ var xScale_0 = d3.local(),
     length_dataset = d3.local();
 
 var z = d3.scaleOrdinal()
+    .range(["#6b486b", "#ff8c00"]);
+
+var z2 = d3.scaleOrdinal()
     .range(["#6b486b", "#ff8c00"]);
 
 dates1 = ["2017-01-16", "2017-01-31", "2017-06-27"];
@@ -66,59 +69,6 @@ function compare_two_bars_inverse(a, b) {
         return -1;
     else
         return 1;
-}
-
-
-/* 
-    Esta función permite inicializar el set de datos a utilizar. 
-*/
-function arreglo_dataset_8(old_dataset){
-
-    var csv_string = "",
-        keys = old_dataset.columns, 
-        numdomains = keys[0], //primera llave: numdomains, 
-        ipsv4count = keys[2]; //segunda llave: ipsv4count
-        ipsv6count = keys[3]; //cuarta llave: ipsv6count
-
-    //console.log(old_dataset);
-
-    array_v4 = [];
-    array_v6 = [];
-    var ipcount;
-
-    for (var i = 0; i < old_dataset.length; i++) {
-        dom_count = +old_dataset[i][numdomains];
-
-        ip_count = old_dataset[i][ipsv4count];    
-        if(array_v4[ip_count] == undefined)
-            array_v4[ip_count] = dom_count;
-        else
-            array_v4[ip_count] += dom_count;
-
-        ip_count = old_dataset[i][ipsv6count];
-        if(array_v6[ip_count] == undefined)
-            array_v6[ip_count] = dom_count;
-        else
-            array_v6[ip_count] += dom_count;
-    }
-    //console.log(array_v4);
-    //console.log(array_v6);
-
-    var new_dataset = [];
-    var iv4 = 0, iv6 = 0, i = 0;
-    while(i < Math.max(array_v4.length, array_v6.length)){
-        var data = {numdomains_v4: array_v4[i] != undefined? array_v4[i]: 0, 
-                    numdomains_v6: array_v6[i] != undefined? array_v6[i]: 0, 
-                    ipscount: i};
-        if(data.numdomains_v4 != 0 || data.numdomains_v6 != 0)
-            new_dataset.push(data);
-        i++;
-    }
-    new_dataset["columns"] = ["numdomains_v4", "numdomains_v6","ipscount"];
-
-    //console.log(new_dataset);
-    return new_dataset;
-
 }
 
 /*
@@ -249,12 +199,8 @@ function init_two_bar_chart(new_dataset, info, fix) {
 
 function update_csv_two_bar_chart(total_dataset, n, duration, info, fix) {
 
-    var dataset = d3.csv(info.url_name + n + ".csv",
-        function (d, i, columns) { //row
-            for (var i = 0, n = columns.length; i < n; ++i)
-                d[columns[i]] = +d[columns[i]];
-            return d;
-        }, function (error, data) { //callback
+    var dataset = d3.csv(info.url_name + n + ".csv", 
+        function (error, data) { //callback
             if (error) throw error;
 
             var svg = d3.select(info.graf_id).select("svg"),
@@ -276,7 +222,7 @@ function update_csv_two_bar_chart(total_dataset, n, duration, info, fix) {
 
             var keys = dataset.columns.slice(0, 2);
             var key_offset = dataset.columns[2];
-            //console.log(keys); //["numns", "num"]      
+            //console.log(dataset.columns); //["numns", "num"]      
 
             align_dataset_two(dataset, total_dataset, info.inverse? compare_two_bars_inverse : compare_two_bars);            
 
@@ -322,45 +268,66 @@ function update_csv_two_bar_chart(total_dataset, n, duration, info, fix) {
                     .attr('class', 'd3-tip')
                     .offset([-10, 0])
                     .html(function(d) {
-                            return "<strong> "+ info.tip_name + ":</strong> <span style='color:white'>" + d.value + "</span>";
+                            return "<strong> "+ info.tip_name + ":</strong> <span style='color:white'>" + d[keys[0]] + "</span>";
+                    });
+
+            var tp_2 = d3.tip()
+                    .attr('class', 'd3-tip')
+                    .offset([-10, 0])
+                    .html(function(d) {
+                            return "<strong> "+ info.tip_name + ":</strong> <span style='color:white'>" + d[keys[1]] + "</span>";
                     });
 
             g.call(tp_1);
-            
-            var gs = g.append("g")
-                .selectAll("g")
-                .data(dataset)
-                .enter().append("g")
-                  .attr("transform", function(d) { return "translate(" + tx_0(d[key_offset]) + ",0)"; });
+            g.call(tp_2);
 
-            var rects = gs.selectAll("rect")
-                .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
+            var rects_1 = g.selectAll("#rect_1")
+                .data(dataset);
 
-                rects.exit()
-                    .transition()
-                      .duration(300)
-                    .attr("y", ty(0))
-                    .attr("height", height - ty(0))
-                    .style('fill-opacity', 1e-6)
-                    .remove();
+            var rects_2 = g.selectAll("#rect_2")
+                .data(dataset);
 
+            rects_1.enter().append("rect").attr("id", "rect_1");
 
-                rects.enter().append("rect")
-                    .attr("y", ty(0))
-                    .attr("height", height - ty(0));
+            rects_2.enter().append("rect").attr("id", "rect_2");
 
-                rects.transition()
-                      .duration(300)
-                  .attr("x", function(d) { return tx_1(d.key); })
-                  .attr("y", function(d) { return ty(d.value); })
-                  .attr("width", tx_1.bandwidth())
-                  .attr("height", function(d) { return height - ty(d.value); })
-                  .attr("fill", function(d) { return z(d.key); });
+            rects_1.transition()
+                  .duration(duration)
+              .attr("x", function(d) { return tx_0(d[key_offset]) + tx_1(keys[0]); })
+              .attr("y", function(d) { return ty(d[keys[0]]) - barPadding; })
+              .attr("width", tx_1.bandwidth())
+              .attr("height", function(d) { return height - ty(d[keys[0]]) + barPadding; })
+              .attr("fill", function(d) { return z(keys[0]); })
+                .attr("stroke-width", "1px")
+                .attr("stroke", "black")
+                .attr("opacity", function(d){
+                    if(d[keys[0]] == 0)
+                        return 0;
+                    else
+                        return 1;
+                });
 
-            //rects.exit().remove();
+            rects_2.transition()
+                  .duration(duration)
+              .attr("x", function(d) { return tx_0(d[key_offset]) + tx_1(keys[1]); })
+              .attr("y", function(d) { return ty(d[keys[1]]) - barPadding; })
+              .attr("width", tx_1.bandwidth())
+              .attr("height", function(d) { return height - ty(d[keys[1]]) + barPadding; })
+              .attr("fill", function(d) { return z(keys[1]); })
+                .attr("stroke-width", "1px")
+                .attr("stroke", "black")
+                .attr("opacity", function(d){
+                    if(d[keys[1]] == 0)
+                        return 0;
+                    else
+                        return 1;
+                });
 
-            rects.on('mouseover', tp_1.show)
+            rects_1.on('mouseover', tp_1.show)
                 .on('mouseout', tp_1.hide);        
+
+            rects_2.on('mouseover', tp_2.show)
+                .on('mouseout', tp_2.hide); 
 
             g.selectAll(".axisX").remove();
             g.append("g")
@@ -399,13 +366,13 @@ function update_csv_two_bar_chart(total_dataset, n, duration, info, fix) {
                   .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
               legend.append("rect")
-                  .attr("x", width - 19)
+                  .attr("x", width - 30)
                   .attr("width", 19)
                   .attr("height", 19)
                   .attr("fill", z);
 
               legend.append("text")
-                  .attr("x", width - 24)
+                  .attr("x", width - 35)
                   .attr("y", 9.5)
                   .attr("dy", "0.32em")
                   .text(function(d) { return d; });
@@ -413,16 +380,65 @@ function update_csv_two_bar_chart(total_dataset, n, duration, info, fix) {
         });
 }
 
+/* 
+    Esta función permite inicializar el set de datos a utilizar. 
+*/
+function arreglo_dataset_8(old_dataset){
 
-info8 = {graf_id: "#grafico8", 
-        text_id: "#text8", 
-        text_name: 'Sin descripción', 
-        opt_id: "#opts8", 
-        url_name: "data/countDomainsWithCountNSIps/countDomainsWithCountNSIps", 
-        tip_name: "Dominios", 
-        inverse: 0, 
-        x_label:"Número de IPs", 
-        y_label:"Cantidad de dominios", 
-        logScale:1};
+    var csv_string = "",
+        keys = old_dataset.columns, 
+        numdomains = keys[0], //primera llave: numdomains, 
+        ipsv4count = keys[2]; //segunda llave: ipsv4count
+        ipsv6count = keys[3]; //cuarta llave: ipsv6count
+
+    //console.log(old_dataset);
+
+    var array_v4 = [],
+        array_v6 = [];
+    var ipcount;
+
+    for (var i = 0; i < old_dataset.length; i++) {
+        var dom_count = +old_dataset[i][numdomains];
+
+        ip_count = old_dataset[i][ipsv4count];    
+        if(array_v4[ip_count] == undefined)
+            array_v4[ip_count] = dom_count;
+        else
+            array_v4[ip_count] += dom_count;
+
+        ip_count = old_dataset[i][ipsv6count];
+        if(array_v6[ip_count] == undefined)
+            array_v6[ip_count] = dom_count;
+        else
+            array_v6[ip_count] += dom_count;
+    }
+    //console.log(array_v4);
+    //console.log(array_v6);
+
+    var new_dataset = [];
+    var iv4 = 0, iv6 = 0, i = 0;
+    while(i < Math.max(array_v4.length, array_v6.length)){
+        var data = {numdomains_v4: array_v4[i] != undefined? array_v4[i]: 0, 
+                    numdomains_v6: array_v6[i] != undefined? array_v6[i]: 0, 
+                    ipscount: i};
+        if(data.numdomains_v4 != 0 || data.numdomains_v6 != 0)
+            new_dataset.push(data);
+        i++;
+    }
+    new_dataset["columns"] = ["numdomains_v4", "numdomains_v6","ipscount"];
+
+    //console.log(new_dataset);
+    return new_dataset;
+
+}
+    info8 = {graf_id: "#grafico8", 
+            text_id: "#text8", 
+            text_name: 'Gráfico 8', 
+            opt_id: "#opts8", 
+            url_name: "data/countDomainsWithCountNSIps/countDomainsWithCountNSIps", 
+            tip_name: "Dominios", 
+            inverse: 0, 
+            x_label:"Número de IPs", 
+            y_label:"Cantidad de dominios", 
+            logScale:1};
         
-set_two_bar_chart([], info8, 0, arreglo_dataset_8);

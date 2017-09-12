@@ -65,9 +65,7 @@ function init_linechart(csv_string){
                 return d3.max(failiure.values, function(f){
                   return +f[keys[2]]; //tercera llave: Domains
                 }); 
-              });
-  //console.log(maxValue);
-
+              }),
   width = w - margin.left - margin.right,
   height = h - margin.top - margin.bottom;
 
@@ -89,6 +87,35 @@ function init_linechart(csv_string){
   var color = d3.scaleOrdinal(d3.schemeCategory10).domain([0, dates.length]); 
 
   var line = d3.local();
+
+      /* Se realiza la obtención de los datos. */
+    d3.json("js/descrip.json", function(text) {
+
+        var root = d3.hierarchy(text);
+        root.sum(function(d) {return d.size})
+
+        var partition = d3.partition().size([height, width])
+                     .padding(0);
+                     //.round(f);
+        /* Permite seleccionar donde posicionar el texto en la página web. */
+        var svgraf3 = d3.select("#text7");
+        /* Permite particionar los datos en nodos. */
+        var g1 = partition(root).children;
+        
+        /* Se busca el nodo correspondiente al gráfico que se desea definir. */
+        g1.forEach(function(d){
+            if(d.data.name == 'Gráfico 7'){           
+                /* Se adhiere el texto a la página web. */
+                d.data.children.forEach(function(h){
+                    svgraf3.append("p")
+                    .attr("align","justify")
+                    .style("text-anchor","end")
+                    .text(h.size);
+                });
+            };
+        });
+
+    })
 
 
   /*var line = d3.line()
@@ -179,7 +206,7 @@ function init_linechart(csv_string){
           .enter()
       .append("g")
           .attr("class", "legend")
-          .attr("transform", function(d, i) { return "translate(" + 50 +"," + i * rect_size + ")"; });
+          .attr("transform", function(d, i) { return "translate(" + 0 +"," + i * rect_size + ")"; });
 
 
   /* Se le asigna el color respectivo a cada recuadro de leyenda creado. */
@@ -201,4 +228,4 @@ function init_linechart(csv_string){
     .text(function(d) { return d.values[0][keys[1]]; });
 }
 
-init_dataset("", "data/countDomainsWithDNSSECErrors/countDomainsWithDNSSECErrors", 0);
+
